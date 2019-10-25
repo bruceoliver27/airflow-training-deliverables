@@ -1,0 +1,10 @@
+default_args:
+    owner: das42
+    depends_on_past: false
+    retries: 1
+    start_date: "2019-04-01"
+    max_retry_delay: 60
+    retry_exponential_backoff: true
+snowflake_conn_id: das42-airflow-training
+aws_conn_id: das42-airflow-training-s3
+aws_rl_bucket_name: das42-airflow-training
