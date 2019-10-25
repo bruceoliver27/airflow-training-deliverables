@@ -1,4 +1,4 @@
-create table if not exists airflow_db_{{ params.env }}.raw_stage_{{ params.name }}.imp (
+create table if not exists airflow_db_{{ params.env }}.raw_stage_{{ params.team_name }}.imp (
   record_type string,
   date string,
   time string,
@@ -43,13 +43,13 @@ begin name load_rl_imp_2019070415;
 
 ---
 
-delete from airflow_db_{{ params.env }}.raw_stage_{{ params.name }}.imp
+delete from airflow_db_{{ params.env }}.raw_stage_{{ params.team_name }}.imp
 where run_datehour = 2019070415
 ;
 
 ---
 
-copy into airflow_db_{{ params.env }}.raw_stage_{{ params.name }}.imp from (
+copy into airflow_db_{{ params.env }}.raw_stage_{{ params.team_name }}.imp from (
   select distinct
     nullif(t.$1, '-') as record_type,
     nullif(t.$2, '-') as date,
@@ -94,7 +94,7 @@ on_error = continue
 
 ---
 
-delete from airflow_db_{{ params.env }}.raw_stage_{{ params.name }}.imp
+delete from airflow_db_{{ params.env }}.raw_stage_{{ params.team_name }}.imp
 where run_datehour = '2019070415'
 and record_type like '#Version: %'
 or record_type like '#Date: %'

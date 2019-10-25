@@ -1,4 +1,4 @@
-create table if not exists airflow_db_{{ params.env }}.raw_stage_{{ params.name }}.state (
+screate table if not exists airflow_db_{{ params.env }}.raw_stage_{{ params.team_name }}.state (
   record_type string,
   date string,
   time string,
@@ -24,13 +24,13 @@ begin name load_rl_state_2019070415;
 
 ---
 
-delete from airflow_db_{{ params.env }}.raw_stage_{{ params.name }}.state
+delete from airflow_db_{{ params.env }}.raw_stage_{{ params.team_name }}.state
 where run_datehour = 2019070415
 ;
 
 ---
 
-copy into airflow_db_{{ params.env }}.raw_stage_{{ params.name }}.state from (
+copy into airflow_db_{{ params.env }}.raw_stage_{{ params.team_name }}.state from (
   select distinct
     nullif(t.$1, '-') as record_type,
     nullif(t.$2, '-') as date,
@@ -49,13 +49,13 @@ copy into airflow_db_{{ params.env }}.raw_stage_{{ params.name }}.state from (
     2019070415 as run_datehour
   from @raw_stage/stage_state_logs_{{ params.env }}/20190704/15/log/ t
 )
-file_format = raw_stage_{{ params.name }}.log_csv_nh_format
+file_format = raw_stage_{{ params.team_name }}.log_csv_nh_format
 on_error = continue
 ;
 
 ---
 
-delete from airflow_db_{{ params.env }}.raw_stage_{{ params.name }}.state
+delete from airflow_db_{{ params.env }}.raw_stage_{{ params.team_name }}.state
 where run_datehour = '2019070415'
 and record_type like '#Version: %'
 or record_type like '#Date: %'
